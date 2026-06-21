@@ -709,40 +709,65 @@ body {
     }
 }
 
-
 .hero-ghost-face {
     position: absolute;
     top: 0;
     right: 0;
-    width: 70%; /* Increase width to occupy more of the right space */
+    width: 100%; /* Change to 100% to allow for smoother blending */
     height: 100%;
-    
-    /* Anchor to the right edge */
-    background-image: url('bio1.png');
-    background-size: contain; /* Use 'contain' so it doesn't get cut off weirdly */
-    background-repeat: no-repeat;
-    background-position: right center;
-    
-    filter: grayscale(100%) contrast(1.2);
-    opacity: 0.12; /* Slightly lower opacity for better text contrast */
     z-index: 1;
     pointer-events: none;
     
-    /* The Magic: A wide gradient fade that leaves the left 40% completely empty */
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%, black 100%);
-    mask-image: linear-gradient(to right, transparent 0%, black 40%, black 100%);
+    background-image: url('bio1.png');
+    background-size: cover;
+    /* Anchors the image to the right so the face doesn't move as much */
+    background-position: right center; 
+    background-repeat: no-repeat;
+    
+    filter: grayscale(100%) contrast(1.2);
+    opacity: 0.2;
 }
 
-/* Mobile Responsive Adjustments */
+/* Use a proper image element for better control */
+.hero-ghost-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 80% center; /* Keeps the face in the frame */
+    filter: grayscale(100%) contrast(1.2);
+    opacity: 0.15;
+}
+
+/* Add this to create a soft fade into the black background */
+.hero-ghost-face::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, var(--bg-dark) 10%, rgba(10,10,10,0.2) 60%, transparent 100%);
+}
+
+/* Mobile-only adjustments */
 @media (max-width: 768px) {
+    .hero-ghost-face img {
+        object-position: center center; /* Face centered on mobile */
+        opacity: 0.1;
+    }
+   @media (max-width: 768px) {
     .hero-ghost-face {
-        width: 100%; /* Take full width on small screens to ensure visibility */
-        opacity: 0.1; /* Lower opacity on mobile so it doesn't clash with text */
-        -webkit-mask-image: linear-gradient(to left, black 40%, transparent 100%);
-        mask-image: linear-gradient(to left, black 40%, transparent 100%);
+        /* Set to center to prevent cropping on the left side */
+        background-position: center center !important; 
+        width: 100%;
+    }
+    
+    .hero-ghost-face::after {
+        /* Soften the fade so the centered image isn't obscured */
+        background: linear-gradient(to right, var(--bg-dark) 0%, rgba(10,10,10,0.3) 50%, transparent 100%);
     }
 }
-
+}
 
 .portfolio-grid {
     display: grid;
